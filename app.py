@@ -8,7 +8,7 @@ from langchain_groq import ChatGroq
 import streamlit as st
 import os
 
-#a
+
 def init_database(mysql_host, mysql_port, mysql_user, mysql_password, mysql_db):
     db_uri = f"mysql+mysqlconnector://{mysql_user}:{mysql_password}@{mysql_host}:{mysql_port}/{mysql_db}"
     return SQLDatabase.from_uri(db_uri)
@@ -81,11 +81,13 @@ SQL Query:
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
         AIMessage(
-            content="Hello! I'm a database manager. Ask me anything about your database."),
-    ]
-st.set_page_config(page_title="dbAI", page_icon=":database-gear:")
+            content="Hello! I'm a database manager. Ask me anything about your database."),]
 
+st.set_page_config(page_title="dbAI",
+                   page_icon="https://cdn-icons-png.flaticon.com/128/12872/12872153.png")
 st.title("Query your Database")
+
+
 with st.sidebar:
 
     st.sidebar.subheader("Database Connection Settings")
@@ -134,8 +136,9 @@ if user_input is not None and user_input.strip() != "":
 
         try:
             with st.chat_message("AI"):
-                response = get_response(user_input, st.session_state.db, st.session_state.chat_history)
-                
+                response = get_response(
+                    user_input, st.session_state.db, st.session_state.chat_history)
+
                 st.markdown(response)
                 st.session_state.chat_history.append(
                     AIMessage(content=response))
